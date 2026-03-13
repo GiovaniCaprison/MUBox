@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "types": ["vite/client"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@/clients/*": ["src/clients/*"],
+      "@/providers/*": ["src/providers/*"],
+      "@/types/*": ["src/types/*"],
+      "@/constants/*": ["src/constants/*"],
+      "@/components/*": ["src/components/*"],
+      "@/layout/*": ["src/layout/*"],
+      "@/pages/*": ["src/pages/*"],
+      "@/hooks/*": ["src/pages/tsflap/hooks/*"]
+    }
+  }
+}

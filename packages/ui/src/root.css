@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --primary: var(--color-zinc-600);
+  --header-bg: var(--color-zinc-100);
+  --section-bg: var(--color-zinc-50);
+}
+
+:root[class~="dark"] {
+  --primary: var(--color-yellow-400);
+  --header-bg: var(--color-zinc-900);
+  --section-bg: var(--color-zinc-800);
+}
+
+@theme {
+  /**
+   * Manually define default Tailwind color pallet which we use in hex so that we can have accessibility control.
+   *
+   * Values pulled from https://tailwindcss.com/docs/colors
+   */
+  --color-*: initial;
+  --color-blue-600: #2563eb;
+  --color-gray-400: #9ca3af;
+  --color-green-600: #16a34a;
+  --color-orange-600: #ea580c;
+  --color-pink-600: #db2777;
+  --color-red-600: #dc2626;
+  --color-teal-600: #0d9488;
+  --color-violet-600: #7c3aed;
+  --color-yellow-400: #facc15;
+  --color-zinc-50: #fafafa;
+  --color-zinc-100: #f4f4f5;
+  --color-zinc-300: #d4d4d8;
+  --color-zinc-600: #52525b;
+  --color-zinc-800: #27272a;
+  --color-zinc-900: #18181b;
+
+  --color-primary: var(--primary);
+
+  --color-header-bg: var(--header-bg);
+  --color-section-bg: var(--section-bg);
+
+  --animate-bg-transition: background ease 0.2s;
+
+  --animate-bow-tie-wiggle: bow-tie-wiggle 4s ease-in-out 4s infinite;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0%;
+    }
+    to {
+      opacity: 100%;
+    }
+  }
+
+  @keyframes bow-tie-wiggle {
+    0%,
+    20% {
+      transform: translate(37%, 7.333%) rotate(0deg);
+    }
+    5%,
+    15% {
+      transform: translate(37%, 7.333%) rotate(10deg);
+    }
+    10% {
+      transform: translate(37%, 7.333%) rotate(-10deg);
+    }
+  }
+}
+
+html,
+body {
+  background: var(--color-header-bg);
+  font:
+    14px "Helvetica Neue",
+    Helvetica,
+    Arial,
+    sans-serif;
+  height: 100%;
+  line-height: 1.4em;
+  margin: 0;
+  min-width: 400px;
+  padding: 0;
+  scroll-padding-top: 64px; /* height of sticky header - used so that anchors are correctly spaced */
+  transition: var(--animate-bg-transition);
+
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+}
+
+ol {
+  list-style: decimal;
+}
+
+ul {
+  list-style: disc;
+}
+
+li {
+  margin-left: calc(var(--spacing) * 8);
+}
+
+section.app {
+  background: var(--color-section-bg);
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  transition: var(--animate-bg-transition);
+
+  /* Ensures the second to last second does not have a border that overlaps with the footer's border */
+  > :nth-last-child(2) {
+    border-bottom: none;
+  }
+}
