@@ -1,0 +1,10 @@
+message="$(cat "$1")"
+
+pattern='^(\((fix|chore|feat|test)\))+:[[:space:]]+.+$'
+
+if ! printf '%s' "$message" | grep -Eq "$pattern"; then
+  echo "Invalid commit message format."
+  echo "Expected one or more prefixes from: (fix) (chore) (feat) (test)"
+  echo "Format: (feat): message or (feat)(chore): message"
+  exit 1
+fi
