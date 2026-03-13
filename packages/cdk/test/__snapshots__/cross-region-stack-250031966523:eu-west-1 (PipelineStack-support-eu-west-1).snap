@@ -1,0 +1,227 @@
+{
+  "Resources": {
+    "CrossRegionCodePipelineReplicationBucketEncryptionAliasF1A0F37D": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "AliasName": "alias/port-eu-tencryptionalias5a0292ed8a9fc8ab1f15",
+        "TargetKeyId": {
+          "Fn::GetAtt": [
+            "CrossRegionCodePipelineReplicationBucketEncryptionKey70216490",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::KMS::Alias",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "CrossRegionCodePipelineReplicationBucketEncryptionKey70216490": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": "kms:*",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::250031966523:root",
+              },
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "kms:Decrypt",
+                "kms:DescribeKey",
+                "kms:Encrypt",
+                "kms:GenerateDataKey*",
+                "kms:ReEncrypt*",
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::250031966523:root",
+              },
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "kms:Decrypt",
+                "kms:DescribeKey",
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": [
+                  {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":iam::147997139104:role/cdk-hnb659fds-deploy-role-147997139104-eu-west-1",
+                      ],
+                    ],
+                  },
+                  {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":iam::211391213128:role/cdk-hnb659fds-deploy-role-211391213128-eu-west-1",
+                      ],
+                    ],
+                  },
+                ],
+              },
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "CrossRegionCodePipelineReplicationBucketFC3227F2": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "KMSMasterKeyID": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:kms:eu-west-1:250031966523:",
+                      {
+                        "Ref": "CrossRegionCodePipelineReplicationBucketEncryptionAliasF1A0F37D",
+                      },
+                    ],
+                  ],
+                },
+                "SSEAlgorithm": "aws:kms",
+              },
+            },
+          ],
+        },
+        "BucketName": "pipelinestack-support-eu-eplicationbucketa45a48ef8d94a71a321d",
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "CrossRegionCodePipelineReplicationBucketPolicyB7BA2BCA": {
+      "Properties": {
+        "Bucket": {
+          "Ref": "CrossRegionCodePipelineReplicationBucketFC3227F2",
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*",
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "CrossRegionCodePipelineReplicationBucketFC3227F2",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "CrossRegionCodePipelineReplicationBucketFC3227F2",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": [
+                "s3:GetBucket*",
+                "s3:GetObject*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": [
+                  {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":iam::147997139104:role/cdk-hnb659fds-deploy-role-147997139104-eu-west-1",
+                      ],
+                    ],
+                  },
+                  {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":iam::211391213128:role/cdk-hnb659fds-deploy-role-211391213128-eu-west-1",
+                      ],
+                    ],
+                  },
+                ],
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "CrossRegionCodePipelineReplicationBucketFC3227F2",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "CrossRegionCodePipelineReplicationBucketFC3227F2",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+  },
+}

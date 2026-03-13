@@ -4,6 +4,8 @@ coverage
 node_modules
 
 __snapshots__
+!packages/cdk/test/__snapshots__/
+!packages/cdk/test/__snapshots__/**
 
 .nx
 
