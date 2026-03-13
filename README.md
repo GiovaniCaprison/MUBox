@@ -10,6 +10,7 @@
 ![typescript](https://img.shields.io/badge/built%20with-typescript-blue)
 ![react](https://img.shields.io/badge/ui-react-61dafb)
 ![vitest](https://img.shields.io/badge/tested%20with-vitest-yellow)
+
 ![license](https://img.shields.io/badge/license-Apache--2.0-red)
 [![release](https://img.shields.io/github/v/tag/GiovaniCaprison/MUBox?include_prereleases&display_name=tag)](https://github.com/GiovaniCaprison/MUBox/releases)
 [![build](https://github.com/GiovaniCaprison/MUBox/actions/workflows/ci.yml/badge.svg?branch=mainline)](https://github.com/GiovaniCaprison/MUBox/actions/workflows/ci.yml)
