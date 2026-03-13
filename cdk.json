@@ -1,0 +1,4 @@
+{
+  "app": "tsx packages/cdk/src/app.ts",
+  "output": "build/cdk.out"
+}

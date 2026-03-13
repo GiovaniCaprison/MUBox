@@ -1,0 +1,44 @@
+{
+  "folders": [
+    {
+      "name": "🌳 Root",
+      "path": ".",
+    },
+    {
+      "name": "🤖 API",
+      "path": "packages/api",
+    },
+    {
+      "name": "🛠️ CDK",
+      "path": "packages/cdk",
+    },
+    {
+      "name": "🔒 Interceptor",
+      "path": "packages/interceptor",
+    },
+    {
+      "name": "📊 RUM",
+      "path": "packages/rum",
+    },
+    {
+      "name": "📚 Shared",
+      "path": "packages/shared",
+    },
+    {
+      "name": "💅 UI",
+      "path": "packages/ui",
+    },
+    {
+      "name": "🔜 TSFlap",
+      "path": "packages/tsflap",
+    },
+  ],
+  "extensions": {
+    "recommendations": [
+      "bradlc.vscode-tailwindcss", // Tailwind CSS https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss
+      "dbaeumer.vscode-eslint", // ESLint https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
+      "esbenp.prettier-vscode", // Prettier https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
+      "vitest.explorer", // Vitest https://marketplace.visualstudio.com/items?itemName=vitest.explorer
+    ],
+  },
+}
