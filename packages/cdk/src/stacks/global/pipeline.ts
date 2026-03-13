@@ -9,8 +9,7 @@ import { Stage } from "../../types";
 /**
  * ARN of the AWS CodeStar Connection to GitHub.
  */
-const GITHUB_CONNECTION_ARN =
-  "arn:aws:codeconnections:us-east-1:250031966523:connection/e1940f22-dc90-4e67-a09b-a9104b9aba0c";
+const GITHUB_CONNECTION_ARN = "arn:aws:codeconnections:us-east-1:250031966523:connection/e1940f22-dc90-4e67-a09b-a9104b9aba0c";
 
 export function isProd(stage: Stage): boolean {
   return stage === Stage.PROD;

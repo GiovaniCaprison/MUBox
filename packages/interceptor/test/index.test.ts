@@ -128,8 +128,8 @@ describe("cognito interceptor", () => {
       const payload = Buffer.from(JSON.stringify({ "cognito:username": "user123" })).toString("base64url");
       const idToken = `header.${payload}.signature`;
       const cookies = [
-        "CognitoIdentityServiceProvider.REPLACE_ME_CLIENT_ID.LastAuthUser=jane.doe",
-        `CognitoIdentityServiceProvider.REPLACE_ME_CLIENT_ID.jane.doe.idToken=${idToken}`,
+        "CognitoIdentityServiceProvider.6995m4a9ddsbvtl1bns9traale.LastAuthUser=jane.doe",
+        `CognitoIdentityServiceProvider.6995m4a9ddsbvtl1bns9traale.jane.doe.idToken=${idToken}`,
       ].join("; ");
 
       mockHandle.mockResolvedValue(makeAuthResponse("/", cookies));

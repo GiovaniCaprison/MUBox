@@ -80,16 +80,14 @@
               {
                 "ActionTypeId": {
                   "Category": "Source",
-                  "Owner": "ThirdParty",
-                  "Provider": "GitHub",
+                  "Owner": "AWS",
+                  "Provider": "CodeStarSourceConnection",
                   "Version": "1",
                 },
                 "Configuration": {
-                  "Branch": "mainline",
-                  "OAuthToken": "{{resolve:secretsmanager:github-token:SecretString:::}}",
-                  "Owner": "GiovaniCaprison",
-                  "PollForSourceChanges": false,
-                  "Repo": "MUBox",
+                  "BranchName": "mainline",
+                  "ConnectionArn": "arn:aws:codeconnections:us-east-1:250031966523:connection/e1940f22-dc90-4e67-a09b-a9104b9aba0c",
+                  "FullRepositoryId": "GiovaniCaprison/MUBox",
                 },
                 "Name": "GiovaniCaprison_MUBox",
                 "OutputArtifacts": [
@@ -97,6 +95,12 @@
                     "Name": "GiovaniCaprison_MUBox_Source",
                   },
                 ],
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "PipelineSourceGiovaniCaprisonMUBoxCodePipelineActionRole169AA4BE",
+                    "Arn",
+                  ],
+                },
                 "RunOrder": 1,
               },
             ],
@@ -2604,6 +2608,12 @@
                   ],
                 },
                 {
+                  "Fn::GetAtt": [
+                    "PipelineSourceGiovaniCaprisonMUBoxCodePipelineActionRole169AA4BE",
+                    "Arn",
+                  ],
+                },
+                {
                   "Fn::Join": [
                     "",
                     [
@@ -2713,26 +2723,122 @@
       },
       "Type": "AWS::IAM::Policy",
     },
-    "PipelineSourceGiovaniCaprisonMUBoxWebhookResource9AF90A8B": {
+    "PipelineSourceGiovaniCaprisonMUBoxCodePipelineActionRole169AA4BE": {
       "Properties": {
-        "Authentication": "GITHUB_HMAC",
-        "AuthenticationConfiguration": {
-          "SecretToken": "{{resolve:secretsmanager:github-token:SecretString:::}}",
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::GetAtt": [
+                    "PipelineRoleB27FAA37",
+                    "Arn",
+                  ],
+                },
+              },
+            },
+          ],
+          "Version": "2012-10-17",
         },
-        "Filters": [
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "PipelineSourceGiovaniCaprisonMUBoxCodePipelineActionRoleDefaultPolicyFBF63032": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "codestar-connections:UseConnection",
+              "Effect": "Allow",
+              "Resource": "arn:aws:codeconnections:us-east-1:250031966523:connection/e1940f22-dc90-4e67-a09b-a9104b9aba0c",
+            },
+            {
+              "Action": [
+                "s3:Abort*",
+                "s3:DeleteObject*",
+                "s3:GetBucket*",
+                "s3:GetObject*",
+                "s3:List*",
+                "s3:PutObject",
+                "s3:PutObjectLegalHold",
+                "s3:PutObjectRetention",
+                "s3:PutObjectTagging",
+                "s3:PutObjectVersionTagging",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "PipelineArtifactsBucketAEA9A052",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "PipelineArtifactsBucketAEA9A052",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": [
+                "kms:Decrypt",
+                "kms:DescribeKey",
+                "kms:Encrypt",
+                "kms:GenerateDataKey*",
+                "kms:ReEncrypt*",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+                  "Arn",
+                ],
+              },
+            },
+            {
+              "Action": [
+                "s3:PutObjectAcl",
+                "s3:PutObjectVersionAcl",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "PipelineArtifactsBucketAEA9A052",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "PipelineSourceGiovaniCaprisonMUBoxCodePipelineActionRoleDefaultPolicyFBF63032",
+        "Roles": [
           {
-            "JsonPath": "$.ref",
-            "MatchEquals": "refs/heads/{Branch}",
+            "Ref": "PipelineSourceGiovaniCaprisonMUBoxCodePipelineActionRole169AA4BE",
           },
         ],
-        "RegisterWithThirdParty": true,
-        "TargetAction": "GiovaniCaprison_MUBox",
-        "TargetPipeline": {
-          "Ref": "Pipeline9850B417",
-        },
-        "TargetPipelineVersion": 1,
       },
-      "Type": "AWS::CodePipeline::Webhook",
+      "Type": "AWS::IAM::Policy",
     },
     "PipelineUpdatePipelineSelfMutationDAA41400": {
       "Properties": {
