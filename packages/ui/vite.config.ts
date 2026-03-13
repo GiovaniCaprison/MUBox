@@ -29,7 +29,6 @@ export default defineConfig({
       "@/components": resolve(__dirname, "./src/components"),
       "@/layout": resolve(__dirname, "./src/layout"),
       "@/pages": resolve(__dirname, "./src/pages"),
-      "@/hooks": resolve(__dirname, "./src/pages/tsflap/hooks"),
     },
   },
   server: {

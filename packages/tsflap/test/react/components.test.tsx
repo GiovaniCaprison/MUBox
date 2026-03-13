@@ -22,6 +22,7 @@ function renderWithTheme(ui: React.ReactElement) {
 
 describe("ThemeProvider and useTheme", () => {
   it("provides theme to children", () => {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     function ThemeConsumer() {
       const theme = useTheme();
       return <div data-testid="theme-name">{theme.name}</div>;
@@ -37,6 +38,7 @@ describe("ThemeProvider and useTheme", () => {
   });
 
   it("switches themes", () => {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     function ThemeConsumer() {
       const theme = useTheme();
       return <div data-testid="theme-name">{theme.name}</div>;

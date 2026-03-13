@@ -11,8 +11,7 @@
       "@/constants/*": ["src/constants/*"],
       "@/components/*": ["src/components/*"],
       "@/layout/*": ["src/layout/*"],
-      "@/pages/*": ["src/pages/*"],
-      "@/hooks/*": ["src/pages/tsflap/hooks/*"]
+      "@/pages/*": ["src/pages/*"]
     }
   }
 }

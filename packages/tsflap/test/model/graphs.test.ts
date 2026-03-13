@@ -214,6 +214,7 @@ describe("Node and Edge", () => {
   it("Node tracks incoming and outgoing edges", () => {
     const q0 = new Node("q0");
     const q1 = new Node("q1");
+    new Edge(q0, q1, new CharacterTransition("a"));
 
     expect(q0.toEdges.size).toBe(1);
     expect(q1.fromEdges.size).toBe(1);

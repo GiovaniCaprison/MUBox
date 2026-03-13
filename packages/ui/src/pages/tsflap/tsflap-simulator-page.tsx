@@ -42,6 +42,11 @@ import type { FunctionComponent } from "react";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 
 import { FormalDefinitionModal } from "./formal-definition-modal";
+import { useCanvasDimensions } from "./hooks/use-canvas-dimensions";
+import { useKeyboardShortcuts } from "./hooks/use-keyboard-shortcuts";
+import { useSimulatorCommands } from "./hooks/use-simulator-commands";
+import { useTabManagement } from "./hooks/use-tab-management";
+import { useTestInputs } from "./hooks/use-test-inputs";
 import { PlusIcon } from "./icons";
 import { KeyboardShortcutsModal } from "./keyboard-shortcuts-modal";
 import { PowerClassModal } from "./power-class-modal";
@@ -62,11 +67,6 @@ import { TestInputRow } from "./test-input-row";
 import { CommandPalette } from "@/components/command-palette";
 import { AlertModal, ConfirmModal } from "@/components/confirm-modal";
 import { FloatingPanel, PanelRow } from "@/components/floating-panel";
-import { useCanvasDimensions } from "@/hooks/use-canvas-dimensions";
-import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
-import { useSimulatorCommands } from "@/hooks/use-simulator-commands";
-import { useTabManagement } from "@/hooks/use-tab-management";
-import { useTestInputs } from "@/hooks/use-test-inputs";
 import { DarkModeContext } from "@/providers/theme-provider";
 
 /* ─── Dark-mode theme overrides for the canvas ─── */
