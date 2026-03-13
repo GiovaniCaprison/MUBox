@@ -40,11 +40,9 @@
   "include": [
     ".prettierrc.mjs",
     "eslint.config.mjs",
-    "${configDir}/.storybook/**/*",
     "${configDir}/rolldown.config.ts",
     "${configDir}/scripts/**/*",
     "${configDir}/src/**/*",
-    "${configDir}/stories/**/*",
     "${configDir}/test/**/*",
     "${configDir}/tsdown.config.ts",
     "${configDir}/vite.config.ts",

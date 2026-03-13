@@ -1,0 +1,28 @@
+{
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": [],
+    "production": ["default"]
+  },
+  "targetDefaults": {
+    "build": {
+      "cache": true
+    },
+    "check-format": {
+      "cache": true
+    },
+    "copy-bats-config": {
+      "cache": true
+    },
+    "lint": {
+      "cache": true
+    },
+    "test": {
+      "cache": true,
+      "outputs": ["{workspaceRoot}/build/documentation/coverage/{projectRoot}"]
+    },
+    "type-check": {
+      "cache": true
+    }
+  }
+}

@@ -1,12 +1,10 @@
 dist
 build
-stories
 coverage
 node_modules
 
 __snapshots__
 
 .nx
-.storybook
 
 .DS_Store

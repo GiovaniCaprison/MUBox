@@ -4,7 +4,6 @@ import importPlugin from 'eslint-plugin-import';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import reactPlugin from 'eslint-plugin-react';
 import { rules as reactHooksRules } from 'eslint-plugin-react-hooks';
-import storybook from 'eslint-plugin-storybook';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
@@ -119,10 +118,7 @@ export default tseslint.config(
       ],
     },
   },
-
-  // Enables Storybook linting
-  storybook.configs["flat/recommended"],
-
+  
   // Disables all rules that would conflict with Prettier
   eslintConfigPrettier,
 
