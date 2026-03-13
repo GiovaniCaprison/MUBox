@@ -6,6 +6,12 @@ import { HUMANIZED_STAGE_NAMES } from "../../constants";
 import { BetaStage, ProdStage } from "../../constructs/stages";
 import { Stage } from "../../types";
 
+/**
+ * ARN of the AWS CodeStar Connection to GitHub.
+ */
+const GITHUB_CONNECTION_ARN =
+  "arn:aws:codeconnections:us-east-1:250031966523:connection/e1940f22-dc90-4e67-a09b-a9104b9aba0c";
+
 export function isProd(stage: Stage): boolean {
   return stage === Stage.PROD;
 }
@@ -24,7 +30,10 @@ export class PipelineStack extends Stack {
     const pipeline = new CodePipeline(this, "Pipeline", {
       crossAccountKeys: true,
       synth: new ShellStep("Synth", {
-        input: CodePipelineSource.gitHub("GiovaniCaprison/MUBox", "mainline"),
+        // CodeStar Connection (GitHub App) — avoids the legacy OAuth/Secrets Manager path.
+        input: CodePipelineSource.connection("GiovaniCaprison/MUBox", "mainline", {
+          connectionArn: GITHUB_CONNECTION_ARN,
+        }),
         commands: ["npm ci", "npm run release"],
       }),
     });
