@@ -11,11 +11,9 @@
 ![react](https://img.shields.io/badge/ui-react-61dafb)
 ![vitest](https://img.shields.io/badge/tested%20with-vitest-yellow)
 ![license](https://img.shields.io/badge/license-Apache--2.0-red)
-
-<!-- TODO -->
-<!-- - Add release version badge -->
-<!-- - Add build status badge -->
-<!-- - Add coverage badge -->
+[![release](https://img.shields.io/github/v/release/GiovaniCaprison/MUBox?display_name=tag)](https://github.com/GiovaniCaprison/MUBox/releases)
+[![build](https://github.com/GiovaniCaprison/MUBox/actions/workflows/ci.yml/badge.svg?branch=mainline)](https://github.com/GiovaniCaprison/MUBox/actions/workflows/ci.yml)
+[![coverage](https://codecov.io/gh/GiovaniCaprison/MUBox/graph/badge.svg)](https://codecov.io/gh/GiovaniCaprison/MUBox)
 
 ---
 
