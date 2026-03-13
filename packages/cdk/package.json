@@ -1,0 +1,82 @@
+{
+  "name": "@mubox/local-cdk",
+  "version": "1.0.0",
+  "description": "The CDK-managed infrastructure for MUBox.",
+  "license": "Apache-2.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "scripts": {
+    "build": "cd ../.. && cdk synth",
+    "cdk": "cd ../.. && cdk",
+    "check-format": "prettier . --check",
+    "clean": "rm -rf build coverage node_modules",
+    "copy-bats-config": "cp -r configuration/Packaging ../../build",
+    "fix": "prettier . --write && eslint . --fix",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:update-snapshot": "vitest run --update",
+    "type-check": "tsc"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "dependsOn": [
+          "^build",
+          "copy-bats-config"
+        ],
+        "outputs": [
+          "{workspaceRoot}/build/cdk.out"
+        ]
+      },
+      "cdk": {
+        "dependsOn": [
+          "build"
+        ]
+      },
+      "copy-bats-config": {
+        "outputs": [
+          "{workspaceRoot}/build/Packaging"
+        ]
+      },
+      "fix": {
+        "dependsOn": [
+          "^build"
+        ]
+      },
+      "lint": {
+        "dependsOn": [
+          "^build"
+        ]
+      },
+      "test": {
+        "dependsOn": [
+          "^build"
+        ]
+      },
+      "test:update-snapshot": {
+        "dependsOn": [
+          "^build"
+        ]
+      },
+      "type-check": {
+        "dependsOn": [
+          "^build"
+        ]
+      }
+    }
+  },
+  "dependencies": {
+    "@mubox/local-api": "1.0.0",
+    "@mubox/local-interceptor": "1.0.0",
+    "@mubox/local-rum": "1.0.0",
+    "@mubox/local-shared": "1.0.0",
+    "@mubox/local-ui": "1.0.0",
+    "aws-cdk-lib": "^2.220.0",
+    "cdk-monitoring-constructs": "^9.15.2",
+    "constructs": "^10.4.2"
+  },
+  "devDependencies": {
+    "aws-cdk": "^2.1030.0"
+  }
+}
