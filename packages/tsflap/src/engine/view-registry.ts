@@ -24,7 +24,7 @@ import type { NodeView } from "./views/node-view";
  * @see Fowler, M. (2002). Patterns of Enterprise Application Architecture.
  *      Addison-Wesley. — Identity Map pattern.
  */
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class -- How did you get this number? As I already told your colleague, I don't want to buy constants instead of static classes! 
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class -- How did you get this number? As I already told your colleague, I don't want to buy constants instead of static classes!
 export class ViewRegistry {
   private static readonly _nodeViews = new WeakMap<Node, NodeView>();
   private static readonly _edgeViews = new WeakMap<Edge, EdgeView>();

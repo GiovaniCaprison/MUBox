@@ -139,11 +139,7 @@ export class EdgeView {
     const y = (1 - t) * (1 - t) * this.start.y + 2 * (1 - t) * t * this.control.y + t * t * this.end.y;
 
     return new MutablePoint(x, y).add(
-      MutablePoint.getNormalOffset(
-        this.start,
-        this.end,
-        (this.pathMode !== EdgeViewPathMode.SELF ? 1 : -1) * ((modelNumber ?? 0) * 20),
-      ),
+      MutablePoint.getNormalOffset(this.start, this.end, (this.pathMode !== EdgeViewPathMode.SELF ? 1 : -1) * ((modelNumber ?? 0) * 20)),
     );
   }
 

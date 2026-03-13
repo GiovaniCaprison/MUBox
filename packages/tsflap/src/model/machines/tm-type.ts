@@ -167,7 +167,7 @@ export class TMMachineType implements IMachineType<TMachineState> {
   getRemainingInput(state: TMachineState): string {
     return state.input
       .slice(state.inputPosition)
-      .map((c) => (c ?? ""))
+      .map((c) => c ?? "")
       .join("");
   }
 

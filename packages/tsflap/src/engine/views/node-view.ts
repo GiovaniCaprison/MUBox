@@ -20,10 +20,10 @@ export class NodeView {
 
   public updateEdgeVisualizationPaths(updateFn?: (value: Edge, index: number, array: Edge[]) => void) {
     updateFn ??= (edgeModel: Edge) => {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- Wait a sec - I know you!
-        const ev = ViewRegistry.getEdgeView(edgeModel)!;
-        ev.recalculatePath(ev.hasMovedControlPoint() ? ev.control : undefined);
-      };
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- Wait a sec - I know you!
+      const ev = ViewRegistry.getEdgeView(edgeModel)!;
+      ev.recalculatePath(ev.hasMovedControlPoint() ? ev.control : undefined);
+    };
     this.forEachEdge(updateFn);
   }
 

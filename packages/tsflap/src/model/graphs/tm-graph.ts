@@ -1,4 +1,4 @@
-/* eslint-disable no-prototype-builtins -- We aren't parsing JSON payloads from a client request - this is a prototype of a domain object which we ourselves create it is safe to use */ 
+/* eslint-disable no-prototype-builtins -- We aren't parsing JSON payloads from a client request - this is a prototype of a domain object which we ourselves create it is safe to use */
 import type { Edge } from "../edge";
 import { BLANK } from "../symbols";
 import type { Transition } from "../transitions";

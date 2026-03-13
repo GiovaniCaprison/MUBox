@@ -97,7 +97,7 @@ export class ExecutionEngine<TState extends IMachineState> {
         throw new MachineError(`Reached max configurations (${MAX_CONFIGURATIONS})`);
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- This will not be undefined as we already check the length - but the queue interface treats it as such so ignore 
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- This will not be undefined as we already check the length - but the queue interface treats it as such so ignore
       const current = queue.shift()!;
 
       if (current.isFinal()) {
@@ -201,7 +201,7 @@ export class ExecutionEngine<TState extends IMachineState> {
         throw new MachineError(`Exceeded max configurations (${MAX_CONFIGURATIONS})`);
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- This will not be undefined as we already check the length - but the queue interface treats it as such so ignore 
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- This will not be undefined as we already check the length - but the queue interface treats it as such so ignore
       const current = queue.shift()!;
 
       if (current.node.final) {

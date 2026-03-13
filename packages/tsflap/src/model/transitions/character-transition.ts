@@ -39,7 +39,7 @@ export class CharacterTransition implements Transition {
     if (this.pending) {
       return false;
     }
-    return this.character === EPSILON ? true : input.startsWith(this.character); 
+    return this.character === EPSILON ? true : input.startsWith(this.character);
   }
 
   getTransitionParts(): ITransitionPart[] {

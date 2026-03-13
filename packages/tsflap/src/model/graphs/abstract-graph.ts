@@ -391,7 +391,7 @@ export abstract class AbstractGraph implements IGraph {
           this.addEdge(edge[0], edge[1], edge[2]);
         }
       });
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Pretty straight forward don't you think?
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Pretty straight forward don't you think?
     } catch (e) {
       return false;
     }
