@@ -25,7 +25,7 @@ export class PipelineStack extends Stack {
       crossAccountKeys: true,
       synth: new ShellStep("Synth", {
         input: CodePipelineSource.gitHub("GiovaniCaprison/MUBox", "mainline"),
-        commands: ["npm ci", "npm run build", "npx cdk synth"],
+        commands: ["npm ci", "npm run release"],
       }),
     });
 
