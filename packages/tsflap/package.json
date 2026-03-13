@@ -15,8 +15,10 @@
     }
   },
   "scripts": {
-    "build": "tsdown && npm run test",
+    "build": "tsdown",
     "clean": "rm -rf dist coverage node_modules",
+    "fix": "prettier . --write && eslint . --fix",
+    "lint": "eslint .",
     "dev": "vite",
     "test": "vitest run",
     "type-check": "tsc"
@@ -24,8 +26,31 @@
   "nx": {
     "targets": {
       "build": {
+        "dependsOn": [
+          "^build"
+        ],
         "outputs": [
-          "{workspaceRoot}/dist/tsflap"
+          "{workspaceRoot}/build/ui"
+        ]
+      },
+      "fix": {
+        "dependsOn": [
+          "^build"
+        ]
+      },
+      "lint": {
+        "dependsOn": [
+          "^build"
+        ]
+      },
+      "test": {
+        "dependsOn": [
+          "^build"
+        ]
+      },
+      "type-check": {
+        "dependsOn": [
+          "^build"
         ]
       }
     }
