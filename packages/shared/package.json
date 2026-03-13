@@ -1,0 +1,31 @@
+{
+  "name": "@mubox/local-shared",
+  "version": "1.0.0",
+  "description": "The shared logic for MUBox",
+  "license": "Apache-2.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "check-format": "prettier . --check",
+    "clean": "rm -rf node_modules",
+    "fix": "prettier . --write && eslint . --fix",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "type-check": "tsc"
+  },
+  "devDependencies": {
+    "tsdown": "^0.14.1"
+  }
+}
