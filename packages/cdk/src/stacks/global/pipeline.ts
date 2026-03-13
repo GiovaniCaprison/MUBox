@@ -53,7 +53,7 @@ export class PipelineStack extends Stack {
         input: CodePipelineSource.connection("GiovaniCaprison/MUBox", "mainline", {
           connectionArn: GITHUB_CONNECTION_ARN,
         }),
-        commands: ["npm ci", "npm run release"],
+        commands: ["npm ci", "npm run check-format", "npm run lint", "npm run type-check", "npm run test", "npm run build"],
       }),
     });
 

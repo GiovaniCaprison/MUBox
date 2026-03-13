@@ -116,7 +116,7 @@
                   "Version": "1",
                 },
                 "Configuration": {
-                  "EnvironmentVariables": "[{"name":"_PROJECT_CONFIG_HASH","type":"PLAINTEXT","value":"591c84a7e5e2fa9c280890ba80fffa6c1e472545fc8b4043bcbcb0c90c2dd16a"}]",
+                  "EnvironmentVariables": "[{"name":"_PROJECT_CONFIG_HASH","type":"PLAINTEXT","value":"885c2ff5e97e0c0127d3b84b7ee0cdc659e3402eeee84c60bf461389849ed69f"}]",
                   "ProjectName": {
                     "Ref": "PipelineBuildSynthCdkBuildProject6BEFA8E6",
                   },
@@ -2258,7 +2258,11 @@
     "build": {
       "commands": [
         "npm ci",
-        "npm run release"
+        "npm run check-format",
+        "npm run lint",
+        "npm run type-check",
+        "npm run test",
+        "npm run build"
       ]
     }
   },
