@@ -1,3 +1,4 @@
+import { BuildSpec, LinuxBuildImage } from "aws-cdk-lib/aws-codebuild";
 import { Stack, type StackProps } from "aws-cdk-lib/core";
 import { CodePipeline, CodePipelineSource, ManualApprovalStep, ShellStep } from "aws-cdk-lib/pipelines";
 import { Construct } from "constructs";
@@ -26,8 +27,27 @@ export class PipelineStack extends Stack {
   constructor(scope: Construct, props: StackProps) {
     super(scope, "PipelineStack", props);
 
+    const node22BuildDefaults = {
+      buildEnvironment: {
+        buildImage: LinuxBuildImage.STANDARD_7_0,
+      },
+      partialBuildSpec: BuildSpec.fromObject({
+        version: "0.2",
+        phases: {
+          install: {
+            "runtime-versions": {
+              nodejs: "22",
+            },
+          },
+        },
+      }),
+    };
+
     const pipeline = new CodePipeline(this, "Pipeline", {
       crossAccountKeys: true,
+      codeBuildDefaults: node22BuildDefaults,
+      selfMutationCodeBuildDefaults: node22BuildDefaults,
+      assetPublishingCodeBuildDefaults: node22BuildDefaults,
       synth: new ShellStep("Synth", {
         // CodeStar Connection (GitHub App) — avoids the legacy OAuth/Secrets Manager path.
         input: CodePipelineSource.connection("GiovaniCaprison/MUBox", "mainline", {

@@ -116,7 +116,7 @@
                   "Version": "1",
                 },
                 "Configuration": {
-                  "EnvironmentVariables": "[{"name":"_PROJECT_CONFIG_HASH","type":"PLAINTEXT","value":"8b93e555f8b4f4deec96ca63f7a66d0ce70869ad0f640a7dcf3adf01ec2a86e4"}]",
+                  "EnvironmentVariables": "[{"name":"_PROJECT_CONFIG_HASH","type":"PLAINTEXT","value":"591c84a7e5e2fa9c280890ba80fffa6c1e472545fc8b4043bcbcb0c90c2dd16a"}]",
                   "ProjectName": {
                     "Ref": "PipelineBuildSynthCdkBuildProject6BEFA8E6",
                   },
@@ -153,7 +153,7 @@
                   "Version": "1",
                 },
                 "Configuration": {
-                  "EnvironmentVariables": "[{"name":"_PROJECT_CONFIG_HASH","type":"PLAINTEXT","value":"167eef1378d6e6ad8c4c8da3461f900d6e066cd0916052ee812a8d94b87ad38c"}]",
+                  "EnvironmentVariables": "[{"name":"_PROJECT_CONFIG_HASH","type":"PLAINTEXT","value":"f2bea2c7a5ba6d2bf7003db57e3e6f99d6a71b20515d219533b56861a0042aae"}]",
                   "ProjectName": {
                     "Ref": "PipelineUpdatePipelineSelfMutationDAA41400",
                   },
@@ -1782,6 +1782,9 @@
   "version": "0.2",
   "phases": {
     "install": {
+      "runtime-versions": {
+        "nodejs": "22"
+      },
       "commands": [
         "npm install -g cdk-assets@latest"
       ]
@@ -1838,6 +1841,9 @@
   "version": "0.2",
   "phases": {
     "install": {
+      "runtime-versions": {
+        "nodejs": "22"
+      },
       "commands": [
         "npm install -g cdk-assets@latest"
       ]
@@ -1894,6 +1900,9 @@
   "version": "0.2",
   "phases": {
     "install": {
+      "runtime-versions": {
+        "nodejs": "22"
+      },
       "commands": [
         "npm install -g cdk-assets@latest"
       ]
@@ -1948,6 +1957,9 @@
   "version": "0.2",
   "phases": {
     "install": {
+      "runtime-versions": {
+        "nodejs": "22"
+      },
       "commands": [
         "npm install -g cdk-assets@latest"
       ]
@@ -1998,6 +2010,9 @@
   "version": "0.2",
   "phases": {
     "install": {
+      "runtime-versions": {
+        "nodejs": "22"
+      },
       "commands": [
         "npm install -g cdk-assets@latest"
       ]
@@ -2048,6 +2063,9 @@
   "version": "0.2",
   "phases": {
     "install": {
+      "runtime-versions": {
+        "nodejs": "22"
+      },
       "commands": [
         "npm install -g cdk-assets@latest"
       ]
@@ -2232,6 +2250,11 @@
           "BuildSpec": "{
   "version": "0.2",
   "phases": {
+    "install": {
+      "runtime-versions": {
+        "nodejs": "22"
+      }
+    },
     "build": {
       "commands": [
         "npm ci",
@@ -2241,7 +2264,9 @@
   },
   "artifacts": {
     "base-directory": "cdk.out",
-    "files": "**/*"
+    "files": [
+      "**/*"
+    ]
   }
 }",
           "Type": "CODEPIPELINE",
@@ -2873,6 +2898,9 @@
   "version": "0.2",
   "phases": {
     "install": {
+      "runtime-versions": {
+        "nodejs": "22"
+      },
       "commands": [
         "npm install -g aws-cdk@2"
       ]
