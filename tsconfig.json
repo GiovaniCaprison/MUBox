@@ -1,0 +1,58 @@
+{
+  "compilerOptions": {
+    /**
+     * These are the recommended lib, module, and target for Node.js 22.x which is lowest version we support.
+     *
+     * See here for more details https://stackoverflow.com/a/72380008/7229391
+     *
+     * These values should be updated when we update what Node.js versions we use.
+     */
+    "lib": [
+      "ES2023",
+      "dom" // For support for libraries in the browser like document
+    ],
+    "module": "ES2022",
+    "target": "ES2022",
+
+    // These are custom settings for our project.
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "declaration": false,
+    "forceConsistentCasingInFileNames": true,
+    "inlineSources": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "noEmitOnError": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "preserveWatchOutput": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "verbatimModuleSyntax": true
+  },
+
+  // Includes all the various places we keep our source for all of the projects
+  "include": [
+    ".prettierrc.mjs",
+    "eslint.config.mjs",
+    "${configDir}/.storybook/**/*",
+    "${configDir}/rolldown.config.ts",
+    "${configDir}/scripts/**/*",
+    "${configDir}/src/**/*",
+    "${configDir}/stories/**/*",
+    "${configDir}/test/**/*",
+    "${configDir}/tsdown.config.ts",
+    "${configDir}/vite.config.ts",
+    "${configDir}/vitest.config.ts"
+  ],
+
+  // The NodeJSFunction in CDK uses ts-node under the hood. This instructs ts-node to use SWC which is much faster at transpiling.
+  "ts-node": {
+    "swc": true
+  }
+}
