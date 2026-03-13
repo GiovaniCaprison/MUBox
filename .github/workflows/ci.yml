@@ -55,12 +55,9 @@ jobs:
         with:
           name: coverage-report
           path: build/documentation/coverage
-          if-no-files-found: warn
 
-      - name: Upload coverage to Codecov (optional)
-        if: ${{ secrets.CODECOV_TOKEN != '' }}
-        uses: codecov/codecov-action@v4
+      - name: Upload results to Codecov
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           directory: build/documentation/coverage
-          fail_ci_if_error: false
