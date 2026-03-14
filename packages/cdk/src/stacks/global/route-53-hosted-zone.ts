@@ -1,6 +1,6 @@
 import { AccountPrincipal, CompositePrincipal, type IPrincipal, PolicyDocument, PolicyStatement, Role } from "aws-cdk-lib/aws-iam";
 import { CrossAccountZoneDelegationRecord, type IPublicHostedZone, PublicHostedZone, TxtRecord } from "aws-cdk-lib/aws-route53";
-import { CfnResource, Stack } from "aws-cdk-lib/core";
+import { Stack } from "aws-cdk-lib/core";
 import { MonitoringFacade } from "cdk-monitoring-constructs";
 import type { Construct } from "constructs";
 
@@ -70,20 +70,10 @@ export class Route53HostedZoneStack extends DeploymentStack implements Monitorab
       });
 
       /**
-       * The imported zone has no queryLogsLogGroupArn set on construction, so we wire up DNS query
-       * logging separately via a raw CfnResource for AWS::Route53::QueryLoggingConfig.
-       *
-       * CDK does not generate an L1 construct for this CloudFormation resource type, so we fall
-       * back to the generic CfnResource escape hatch.
+       * Query logging for an imported hosted zone cannot be configured with a standalone
+       * CloudFormation resource in this stack. PublicHostedZone supports query logging only when
+       * creating the zone (see the non-prod branch below).
        */
-      const queryLoggingConfig = new CfnResource(this, "Route53QueryLoggingConfig", {
-        type: "AWS::Route53::QueryLoggingConfig",
-        properties: {
-          CloudWatchLogsLogGroupArn: this.queryLogs.logGroupArn,
-          HostedZoneId: this.hostedZone.hostedZoneId,
-        },
-      });
-      queryLoggingConfig.node.addDependency(this.queryLogs.route53PermissionsGrant);
     } else {
       /**
        * In non-prod stages we create the hosted zone from scratch.
