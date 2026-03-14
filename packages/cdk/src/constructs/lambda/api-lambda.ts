@@ -177,11 +177,18 @@ export class ApiLambda extends Function implements Monitorable {
     this._apiLogGroup = logGroup;
     this.role = role;
 
+    // Seems like AWS placed specifics limits on new AWS Accounts
+    // these quotas are increased automatically based on our usage.
+    // for now we can't increase past 10 despite default being 1000.
+    // @see docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+    let concurrentExecutions = isProd(stage) ? 2 : undefined;
+
+    concurrentExecutions = undefined;
     // Adds the function alias that points at the latest code and the function URL which points to that alias.
     this.alias = this.addAlias("Live", {
       description:
         "The primary alias for this Lambda function that points at the latest version of this function's code. All integrations should point to this alias.",
-      provisionedConcurrentExecutions: isProd(stage) ? 2 : undefined,
+      provisionedConcurrentExecutions: concurrentExecutions,
     });
     this.url = this.alias.addFunctionUrl({ authType: FunctionUrlAuthType.AWS_IAM });
 
