@@ -24,7 +24,7 @@ import { Authenticator } from "cognito-at-edge";
 const REGION = "us-east-1";
 const USER_POOL_ID = "us-east-1_EZQEHLRJt";
 const CLIENT_ID = "6995m4a9ddsbvtl1bns9traale";
-const COGNITO_DOMAIN = "https://mubox.auth.us-east-1.amazoncognito.com";
+const COGNITO_DOMAIN = "mubox.auth.us-east-1.amazoncognito.com";
 
 const authenticator = new Authenticator({
   region: REGION,
