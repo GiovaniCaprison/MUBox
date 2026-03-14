@@ -1,4 +1,4 @@
-import { BuildSpec, LinuxBuildImage } from "aws-cdk-lib/aws-codebuild";
+import { BuildSpec, ComputeType, LinuxBuildImage } from "aws-cdk-lib/aws-codebuild";
 import { Stack, type StackProps } from "aws-cdk-lib/core";
 import { CodePipeline, CodePipelineSource, ManualApprovalStep, ShellStep } from "aws-cdk-lib/pipelines";
 import { Construct } from "constructs";
@@ -30,6 +30,8 @@ export class PipelineStack extends Stack {
     const node22BuildDefaults = {
       buildEnvironment: {
         buildImage: LinuxBuildImage.STANDARD_7_0,
+        // Bump from the default small worker to improve CI throughput.
+        computeType: ComputeType.LARGE,
       },
       partialBuildSpec: BuildSpec.fromObject({
         version: "0.2",
@@ -53,6 +55,8 @@ export class PipelineStack extends Stack {
         input: CodePipelineSource.connection("GiovaniCaprison/MUBox", "mainline", {
           connectionArn: GITHUB_CONNECTION_ARN,
         }),
+        // Root build writes the cloud assembly to build/cdk.out, not cdk.out.
+        primaryOutputDirectory: "build/cdk.out",
         commands: ["npm ci", "npm run check-format", "npm run lint", "npm run type-check", "npm run test", "npm run build"],
       }),
     });

@@ -116,7 +116,7 @@
                   "Version": "1",
                 },
                 "Configuration": {
-                  "EnvironmentVariables": "[{"name":"_PROJECT_CONFIG_HASH","type":"PLAINTEXT","value":"885c2ff5e97e0c0127d3b84b7ee0cdc659e3402eeee84c60bf461389849ed69f"}]",
+                  "EnvironmentVariables": "[{"name":"_PROJECT_CONFIG_HASH","type":"PLAINTEXT","value":"3618c91865e3effbeab07a35e77e758421f0e3cc2e5dcb5a941cf2563fb3c68f"}]",
                   "ProjectName": {
                     "Ref": "PipelineBuildSynthCdkBuildProject6BEFA8E6",
                   },
@@ -153,7 +153,7 @@
                   "Version": "1",
                 },
                 "Configuration": {
-                  "EnvironmentVariables": "[{"name":"_PROJECT_CONFIG_HASH","type":"PLAINTEXT","value":"f2bea2c7a5ba6d2bf7003db57e3e6f99d6a71b20515d219533b56861a0042aae"}]",
+                  "EnvironmentVariables": "[{"name":"_PROJECT_CONFIG_HASH","type":"PLAINTEXT","value":"066c839aca531953815fca1c80abd28a6da758e8af42450acc32a1c4da4558af"}]",
                   "ProjectName": {
                     "Ref": "PipelineUpdatePipelineSelfMutationDAA41400",
                   },
@@ -1765,7 +1765,7 @@
           ],
         },
         "Environment": {
-          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "ComputeType": "BUILD_GENERAL1_LARGE",
           "Image": "aws/codebuild/standard:7.0",
           "ImagePullCredentialsType": "CODEBUILD",
           "PrivilegedMode": false,
@@ -1824,7 +1824,7 @@
           ],
         },
         "Environment": {
-          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "ComputeType": "BUILD_GENERAL1_LARGE",
           "Image": "aws/codebuild/standard:7.0",
           "ImagePullCredentialsType": "CODEBUILD",
           "PrivilegedMode": false,
@@ -1883,7 +1883,7 @@
           ],
         },
         "Environment": {
-          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "ComputeType": "BUILD_GENERAL1_LARGE",
           "Image": "aws/codebuild/standard:7.0",
           "ImagePullCredentialsType": "CODEBUILD",
           "PrivilegedMode": false,
@@ -1940,7 +1940,7 @@
           ],
         },
         "Environment": {
-          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "ComputeType": "BUILD_GENERAL1_LARGE",
           "Image": "aws/codebuild/standard:7.0",
           "ImagePullCredentialsType": "CODEBUILD",
           "PrivilegedMode": false,
@@ -1993,7 +1993,7 @@
           ],
         },
         "Environment": {
-          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "ComputeType": "BUILD_GENERAL1_LARGE",
           "Image": "aws/codebuild/standard:7.0",
           "ImagePullCredentialsType": "CODEBUILD",
           "PrivilegedMode": false,
@@ -2046,7 +2046,7 @@
           ],
         },
         "Environment": {
-          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "ComputeType": "BUILD_GENERAL1_LARGE",
           "Image": "aws/codebuild/standard:7.0",
           "ImagePullCredentialsType": "CODEBUILD",
           "PrivilegedMode": false,
@@ -2234,7 +2234,7 @@
           ],
         },
         "Environment": {
-          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "ComputeType": "BUILD_GENERAL1_LARGE",
           "Image": "aws/codebuild/standard:7.0",
           "ImagePullCredentialsType": "CODEBUILD",
           "PrivilegedMode": false,
@@ -2267,7 +2267,7 @@
     }
   },
   "artifacts": {
-    "base-directory": "cdk.out",
+    "base-directory": "build/cdk.out",
     "files": [
       "**/*"
     ]
@@ -2885,7 +2885,7 @@
           ],
         },
         "Environment": {
-          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "ComputeType": "BUILD_GENERAL1_LARGE",
           "Image": "aws/codebuild/standard:7.0",
           "ImagePullCredentialsType": "CODEBUILD",
           "PrivilegedMode": false,
