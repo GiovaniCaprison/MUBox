@@ -12,6 +12,6 @@ const ROOT_DOMAIN_NAME = `mu-box.com`;
 const PROD_HOSTED_ZONE_ID = "Z00113732G58CLYO4QZQX";
 
 export const DOMAINS: StageConfiguration<DomainConfiguration> = {
-  BETA: { domainName: `beta.${ROOT_DOMAIN_NAME}`, hasRoute53HostedZoneBeenDelegatedTo: false },
+  BETA: { domainName: `beta.${ROOT_DOMAIN_NAME}`, hasRoute53HostedZoneBeenDelegatedTo: true },
   PROD: { domainName: ROOT_DOMAIN_NAME, hasRoute53HostedZoneBeenDelegatedTo: true, existingHostedZoneId: PROD_HOSTED_ZONE_ID },
 };

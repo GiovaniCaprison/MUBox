@@ -272,7 +272,7 @@
                     "Name": "Synth_Output",
                   },
                 ],
-                "Name": "StaticAssets_Deployment_AwsCliLayer_Code",
+                "Name": "PipelineStack_Beta_Route53HostedZoneStack-Bet75a87e8dountZoneDelegationCustomResourceProvider_Code",
                 "RoleArn": {
                   "Fn::GetAtt": [
                     "PipelineCodeBuildActionRole226DB0CB",
@@ -298,7 +298,7 @@
                     "Name": "Synth_Output",
                   },
                 ],
-                "Name": "Custom_CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1792MiB_Code",
+                "Name": "StaticAssets_Deployment_AwsCliLayer_Code",
                 "RoleArn": {
                   "Fn::GetAtt": [
                     "PipelineCodeBuildActionRole226DB0CB",
@@ -317,6 +317,32 @@
                 "Configuration": {
                   "ProjectName": {
                     "Ref": "PipelineAssetsFileAsset669C72F3C",
+                  },
+                },
+                "InputArtifacts": [
+                  {
+                    "Name": "Synth_Output",
+                  },
+                ],
+                "Name": "Custom_CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1792MiB_Code",
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "PipelineCodeBuildActionRole226DB0CB",
+                    "Arn",
+                  ],
+                },
+                "RunOrder": 1,
+              },
+              {
+                "ActionTypeId": {
+                  "Category": "Build",
+                  "Owner": "AWS",
+                  "Provider": "CodeBuild",
+                  "Version": "1",
+                },
+                "Configuration": {
+                  "ProjectName": {
+                    "Ref": "PipelineAssetsFileAsset7A51C54D0",
                   },
                 },
                 "InputArtifacts": [
@@ -1932,6 +1958,58 @@
         "Cache": {
           "Type": "NO_CACHE",
         },
+        "Description": "Pipeline step PipelineStack/Pipeline/Assets/PipelineStack_Beta_Route53HostedZoneStack-Bet75a87e8dountZoneDelegationCustomResourceProvider_Code",
+        "EncryptionKey": {
+          "Fn::GetAtt": [
+            "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+            "Arn",
+          ],
+        },
+        "Environment": {
+          "ComputeType": "BUILD_GENERAL1_LARGE",
+          "Image": "aws/codebuild/standard:7.0",
+          "ImagePullCredentialsType": "CODEBUILD",
+          "PrivilegedMode": false,
+          "Type": "LINUX_CONTAINER",
+        },
+        "ServiceRole": {
+          "Fn::GetAtt": [
+            "PipelineAssetsFileRole59943A77",
+            "Arn",
+          ],
+        },
+        "Source": {
+          "BuildSpec": "{
+  "version": "0.2",
+  "phases": {
+    "install": {
+      "runtime-versions": {
+        "nodejs": "22"
+      },
+      "commands": [
+        "npm install -g cdk-assets@latest"
+      ]
+    },
+    "build": {
+      "commands": [
+        "cdk-assets --path \"assembly-PipelineStack-Beta/PipelineStackBetaRoute53HostedZoneStackBetaUSEAST193218C2E.assets.json\" --verbose publish \"83805391bceb48daf82c180bcad91925027035bbf3f995578d5ecbe1d85b5819:211391213128-us-east-1-c1962657\""
+      ]
+    }
+  }
+}",
+          "Type": "CODEPIPELINE",
+        },
+      },
+      "Type": "AWS::CodeBuild::Project",
+    },
+    "PipelineAssetsFileAsset5184A5C2F": {
+      "Properties": {
+        "Artifacts": {
+          "Type": "CODEPIPELINE",
+        },
+        "Cache": {
+          "Type": "NO_CACHE",
+        },
         "Description": "Pipeline step PipelineStack/Pipeline/Assets/StaticAssets_Deployment_AwsCliLayer_Code",
         "EncryptionKey": {
           "Fn::GetAtt": [
@@ -1977,7 +2055,7 @@
       },
       "Type": "AWS::CodeBuild::Project",
     },
-    "PipelineAssetsFileAsset5184A5C2F": {
+    "PipelineAssetsFileAsset669C72F3C": {
       "Properties": {
         "Artifacts": {
           "Type": "CODEPIPELINE",
@@ -2030,7 +2108,7 @@
       },
       "Type": "AWS::CodeBuild::Project",
     },
-    "PipelineAssetsFileAsset669C72F3C": {
+    "PipelineAssetsFileAsset7A51C54D0": {
       "Properties": {
         "Artifacts": {
           "Type": "CODEPIPELINE",
@@ -2486,6 +2564,12 @@
                 {
                   "Fn::GetAtt": [
                     "PipelineAssetsFileAsset669C72F3C",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::GetAtt": [
+                    "PipelineAssetsFileAsset7A51C54D0",
                     "Arn",
                   ],
                 },
