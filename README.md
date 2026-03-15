@@ -24,13 +24,24 @@ MUBox is a platform designed to host **interactive educational tools** related t
 
 # Quick Start 🚀
 
-After cloning the repository, run `npm i`.
+If using VSCode, open the `app.code-workspace` file and click the "Open Workspace" button in the bottom left corner to open the project as a workspace. This will make development and navigation much easier.
 
-To build, simply run `npm run build`.
+MUBox is managed via Node, ensure you have v22 before proceeding. 
 
-To build for release, run `npm run build release`.
+Run the commands below from the projects root directory.
+
+To install required dependencies, run `npm i`.
+
+To build the project, run `npm run build`.
+
+To build the project for release, run `npm run release`.
 
 To spin up the development server, run `npm run start`.
+
+> **Note**  
+> The backend development server will attempt to mimic running in a real Lambda environment.  
+> To run MUBox locally and avail of features which integrate with AWS - such as client-side metrics with RUM - you will need to have configured AWS account credentials via AWS SSO on your machine.  
+> If you plan on contributing to such features or require access to test existing ones - reach out to me via email so that I can onboard you with developer credentials scoped to the permissions which you require.
 
 # Development 💻
 
@@ -78,29 +89,32 @@ All of the packages that power MUBox are contained in `/packages`. Below is a li
 
 #### __Common Development__
 
-MUBox is managed via Node, ensure you have v22 before proceeding.
-
-- `npm run build` — Builds the workspace
-- `npm run release` — Builds production artifacts
-- `npm run start` — Starts the development server
+- `aws sso login` — Exchanges an AWS IAM access token for account credentials.
+- `npm run release` — Runs all tasks required before releasing
+- `npm run build` — Builds the project
+- `npm run lint` — Performs linting of the project
 - `npm run fix` — Automatically fixes most formatting and linting issues
-- `npm run clean` — Cleans build artifacts
+- `npm run type-check` - Compiles the project and validates generated types
+- `npm run clean` — Cleans build and dependency artifacts
 - `npm run test` — Runs tests
 - `npm run test:watch` — Runs tests in watch mode
+- `npm run start` — Starts the development server
 
 #### __Infrastructure (AWS CDK)__
 MUBox infrastructure is deployed via a CDK Pipeline in an AWS Organization with IAM Identity Center. Before running the CDK commands you must authenticate with the CDK Pipeline AWS Account via AWS SSO.
 
-- `aws sso login` - Retrieves and caches an AWS IAM Identity Center access token to exchange for AWS credentials.
-- `npm run cdk bootstrap` — Bootstraps an AWS environment for CDK deployments
+- `npm run cdk` - Runs only NX tasks for the CDK package
+- `npm run test:update-snapshot` — Updates the current CDK snapshot
+- `npm run cdk bootstrap` — Bootstraps an AWS environment for CDK 
 - `npm run cdk list` — Lists available stacks in the CDK application
-- `npm run cdk diff <stack>` — Shows differences between deployed and local stacks
+- `npm run cdk diff <stack>` — Shows a diff between deployed and local stacks
 - `npm run cdk deploy <stack>` — Deploys the specified stack
 
 #### __Nx Workspace__
 Nx provides a visual representation of how applications and libraries within the workspace depend on each other.
 
 - `npm run tasks:graph` - Launches an interactive dependency graph viewer. 
+- `npm run clean:cache` — Cleans the NX cache
 
 ## Architecture 🏠
 
