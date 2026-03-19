@@ -1,3 +1,9 @@
+# TSFLAP Thesis
+
+> TSFLAP serves as part of my thesis which means that there is a body of work I would like to preserve.
+> MUBox is something I will continue to develop, meaning as things change I don't want to lose sight of what I submitted for my undergraduate thesis.
+> I am leaving this as a branch which will represent the state I left TSFLAP and MUBox in at the time of completing my thesis. 
+
 # MUBox
 
 > **Note**  
