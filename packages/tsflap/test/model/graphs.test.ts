@@ -93,6 +93,40 @@ describe("FAGraph", () => {
     expect(g.getFinalNodes().size).toBe(0);
   });
 
+  it("removing a node cascades to all incident edges", () => {
+    const g = new FAGraph(false);
+    const q0 = g.addNode("q0", { initial: true });
+    const q1 = g.addNode("q1");
+    const q2 = g.addNode("q2", { final: true });
+
+    g.addEdge(q0, q1, new CharacterTransition("a"));
+    g.addEdge(q1, q2, new CharacterTransition("b"));
+    g.addEdge(q2, q1, new CharacterTransition("c"));
+
+    expect(g.removeNode(q1)).toBe(true);
+    expect(g.getNodes().size).toBe(2);
+    expect(g.getEdges().size).toBe(0);
+    expect(q0.toEdges.size).toBe(0);
+    expect(q2.toEdges.size).toBe(0);
+    expect(q2.fromEdges.size).toBe(0);
+  });
+
+  it("recomputes alphabet when an edge is removed", () => {
+    const g = new FAGraph(false);
+    const q0 = g.addNode("q0", { initial: true });
+    const q1 = g.addNode("q1", { final: true });
+    const edgeA = g.addEdge(q0, q1, new CharacterTransition("a"));
+    g.addEdge(q0, q1, new CharacterTransition("b"));
+
+    g.updateAlphabet();
+    expect(g.getAlphabet()).toHaveProperty("a");
+    expect(g.getAlphabet()).toHaveProperty("b");
+
+    expect(g.removeEdge(edgeA)).toBe(true);
+    expect(g.getAlphabet()).not.toHaveProperty("a");
+    expect(g.getAlphabet()).toHaveProperty("b");
+  });
+
   it("setInitialNode clears previous initial", () => {
     const g = new FAGraph(false);
     const q0 = g.addNode("q0", { initial: true });
@@ -102,6 +136,13 @@ describe("FAGraph", () => {
     expect(q0.initial).toBe(false);
     expect(q1.initial).toBe(true);
     expect(g.getInitialNode()).toBe(q1);
+  });
+
+  it("rejects setting a node from another graph as initial", () => {
+    const g = new FAGraph(false);
+    g.addNode("q0", { initial: true });
+
+    expect(() => g.setInitialNode(new Node("foreign"))).toThrow(/does not belong to this graph/);
   });
 
   it("markFinalNode and unmarkFinalNode work", () => {
@@ -115,6 +156,13 @@ describe("FAGraph", () => {
     g.unmarkFinalNode(q0);
     expect(q0.final).toBe(false);
     expect(g.getFinalNodes().size).toBe(0);
+  });
+
+  it("rejects marking a node from another graph as final", () => {
+    const g = new FAGraph(false);
+    g.addNode("q0", { initial: true });
+
+    expect(() => g.markFinalNode(new Node("foreign"))).toThrow(/does not belong to this graph/);
   });
 
   it("serializes and deserializes (round-trip for simple FA)", () => {
@@ -133,6 +181,20 @@ describe("FAGraph", () => {
     expect(result).toBe(true);
     expect(g2.getNodes().size).toBe(2);
     expect(g2.getInitialNode()?.label).toBe("q0");
+  });
+
+  it("deserializes empty alphabet and edge sections without creating empty symbols", () => {
+    const g = new FAGraph(false);
+    g.addNode("q0", { initial: true });
+    g.addNode("q1", { final: true });
+
+    const serialized = g.toString();
+    const parsed = new FAGraph(false);
+
+    expect(parsed.fromString(serialized)).toBe(true);
+    expect(Object.prototype.hasOwnProperty.call(parsed.getAlphabet(), "")).toBe(false);
+    expect(parsed.getEdges().size).toBe(0);
+    expect(parsed.getFinalNodes().items.map((node) => node.label)).toEqual(["q1"]);
   });
 
   it("getEmptyTransitionCharacter returns epsilon", () => {

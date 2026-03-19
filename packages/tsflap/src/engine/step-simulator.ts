@@ -1,6 +1,6 @@
 import type { Edge } from "../model/edge";
 import type { IGraph } from "../model/graphs/abstract-graph";
-import { ExecutionEngine } from "../model/machines/execution-engine";
+import { invokeSubAutomatonWithResolver } from "../model/machines/execution-engine";
 import { MachineTypeRegistry } from "../model/machines/registry";
 import type { IMachineState, IMachineType, SubAutomatonResolver, SimulationConfiguration, CallTraceEntry } from "../model/machines/types";
 import { MachineError } from "../model/machines/types";
@@ -677,33 +677,7 @@ export class StepSimulator {
    * @returns Array of remaining input strings (one per accepting configuration)
    */
   private runSubAutomaton(callNode: Node, input: string): string[] {
-    if (!callNode.callConfig || !this.resolver) return [];
-
-    const targetGraph = this.resolver(callNode.callConfig.targetAutomatonId);
-    if (!targetGraph) return [];
-
-    // Look up the machine type for the target graph
-    const targetType = MachineTypeRegistry.get(targetGraph.shortName);
-    if (!targetType) return [];
-
-    // Create a child execution engine for the sub-automaton
-    const childEngine = new ExecutionEngine(targetType, targetGraph);
-    childEngine.resolver = this.resolver;
-
-    // TM sub-automata use oracle semantics (accept/reject, input unchanged)
-    if (targetType.shortName === "TM") {
-      try {
-        if (childEngine.run(input)) {
-          return [input];
-        }
-      } catch {
-        // TM error — treat as rejection
-      }
-      return [];
-    }
-
-    // FA and PDA: collect all accepting configurations
-    return childEngine.collectAcceptingConfigurations(input);
+    return invokeSubAutomatonWithResolver(callNode, input, this.resolver).map((result) => result.remainingInput);
   }
 
   /* ─── Helpers ─── */

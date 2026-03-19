@@ -2,7 +2,7 @@
 import type { IPoint } from "../../core/point";
 import type { Edge } from "../../model/edge";
 import type { IGraph } from "../../model/graphs/abstract-graph";
-import type { Node } from "../../model/node";
+import { Node as ModelNode, type Node } from "../../model/node";
 import type { Controller } from "../controller";
 import { ViewRegistry } from "../view-registry";
 import type { ICommand } from "./types";
@@ -23,12 +23,9 @@ export class AddNodeAtPointCommand implements ICommand {
     this.board = board;
     this.graph = board.graph;
     this.point = point;
-    this.node = board.graph.addNode(board.getNextNodeLabel());
-
-    if (board.views.nodes.length === 0) {
-      this.node.initial = true;
-    }
-
+    this.node = new ModelNode(board.getNextNodeLabel(), {
+      initial: board.views.nodes.length === 0,
+    });
     this.nodeV = new NodeView(this.node, point.getMPoint());
   }
 
@@ -78,7 +75,7 @@ export class AddEdgeFromNodeCommand implements ICommand {
       this.endNode = nearestNode.node.model;
       this.neededToCreateNode = false;
     } else {
-      this.endNode = board.graph.addNode(board.getNextNodeLabel());
+      this.endNode = new ModelNode(board.getNextNodeLabel());
       this.endNodeV = new NodeView(this.endNode, endingPoint.getMPoint());
       this.neededToCreateNode = true;
     }

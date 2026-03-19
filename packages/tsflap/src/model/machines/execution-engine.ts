@@ -2,6 +2,53 @@ import { MachineTypeRegistry } from "./registry";
 import type { IMachineState, IMachineType, SubAutomatonResolver } from "./types";
 import { MachineError, MAX_CALL_DEPTH, MAX_CONFIGURATIONS } from "./types";
 import type { IGraph } from "../graphs/abstract-graph";
+import type { Node } from "../node";
+
+export interface SubAutomatonInvocationResult {
+  remainingInput: string;
+  exitNodeLabel: string;
+}
+
+export function invokeSubAutomatonWithResolver(
+  callNode: Node,
+  input: string,
+  resolver: SubAutomatonResolver | null,
+  depth = 0,
+): SubAutomatonInvocationResult[] {
+  if (depth >= MAX_CALL_DEPTH) {
+    throw new MachineError(
+      `Sub-automaton call depth exceeded (${MAX_CALL_DEPTH}). ` + `This may indicate infinite recursion in the RSM system.`,
+    );
+  }
+
+  if (!callNode.callConfig || !resolver) return [];
+
+  const targetGraph = resolver(callNode.callConfig.targetAutomatonId);
+  if (!targetGraph) {
+    throw new MachineError(`Call state "${callNode.label}" references unknown automaton "${callNode.callConfig.targetAutomatonId}".`);
+  }
+
+  const targetType = MachineTypeRegistry.get(targetGraph.shortName);
+  if (!targetType) {
+    throw new MachineError(`No machine type registered for graph type "${targetGraph.shortName}".`);
+  }
+
+  const childEngine = new ExecutionEngine(targetType, targetGraph);
+  childEngine.resolver = resolver;
+
+  if (targetType.shortName === "TM") {
+    try {
+      if (childEngine.run(input)) {
+        return [{ remainingInput: input, exitNodeLabel: "__TM_ACCEPT__" }];
+      }
+    } catch {
+      // TM error — treat as rejection
+    }
+    return [];
+  }
+
+  return childEngine.collectAcceptingConfigurationsWithExitInfo(input);
+}
 
 /**
  * Generic execution engine for all automaton types.
@@ -259,51 +306,7 @@ export class ExecutionEngine<TState extends IMachineState> {
    * @returns Array of remaining input strings (one per accepting configuration)
    */
   private invokeSubAutomaton(callNode: import("../node").Node, input: string, depth: number): string[] {
-    if (depth >= MAX_CALL_DEPTH) {
-      throw new MachineError(
-        `Sub-automaton call depth exceeded (${MAX_CALL_DEPTH}). ` + `This may indicate infinite recursion in the RSM system.`,
-      );
-    }
-
-    if (!callNode.callConfig || !this.resolver) return [];
-
-    const targetGraph = this.resolver(callNode.callConfig.targetAutomatonId);
-    if (!targetGraph) {
-      throw new MachineError(`Call state "${callNode.label}" references unknown automaton "${callNode.callConfig.targetAutomatonId}".`);
-    }
-
-    // Look up the machine type for the target graph from the registry.
-    // This is where cross-type composition happens: the target may be
-    // a different automaton type than the caller.
-    const targetType = MachineTypeRegistry.get(targetGraph.shortName);
-    if (!targetType) {
-      throw new MachineError(`No machine type registered for graph type "${targetGraph.shortName}".`);
-    }
-
-    // Create a child execution engine for the sub-automaton
-    const childEngine = new ExecutionEngine(targetType, targetGraph);
-    childEngine.resolver = this.resolver; // Propagate resolver for nested calls
-
-    // For FA and PDA targets, collect all accepting configurations
-    // (each consuming a different amount of input).
-    // For TM targets, use oracle semantics (accept/reject, input unchanged).
-    if (targetType.shortName === "TM") {
-      // TM sub-automata use oracle semantics: the TM is a yes/no predicate.
-      // If it accepts, the caller continues with the input unchanged.
-      // This matches the standard subroutine/oracle model in computability
-      // theory (Sipser, 2012, Theorem 3.16; Rogers, 1967, §9.7).
-      try {
-        if (childEngine.run(input)) {
-          return [input];
-        }
-      } catch {
-        // TM error — treat as rejection
-      }
-      return [];
-    } else {
-      // FA and PDA: collect all accepting configurations
-      return childEngine.collectAcceptingConfigurations(input);
-    }
+    return invokeSubAutomatonWithResolver(callNode, input, this.resolver, depth).map((result) => result.remainingInput);
   }
 
   /**
@@ -315,39 +318,6 @@ export class ExecutionEngine<TState extends IMachineState> {
     input: string,
     depth: number,
   ): { remainingInput: string; exitNodeLabel: string }[] {
-    if (depth >= MAX_CALL_DEPTH) {
-      throw new MachineError(
-        `Sub-automaton call depth exceeded (${MAX_CALL_DEPTH}). ` + `This may indicate infinite recursion in the RSM system.`,
-      );
-    }
-
-    if (!callNode.callConfig || !this.resolver) return [];
-
-    const targetGraph = this.resolver(callNode.callConfig.targetAutomatonId);
-    if (!targetGraph) {
-      throw new MachineError(`Call state "${callNode.label}" references unknown automaton "${callNode.callConfig.targetAutomatonId}".`);
-    }
-
-    const targetType = MachineTypeRegistry.get(targetGraph.shortName);
-    if (!targetType) {
-      throw new MachineError(`No machine type registered for graph type "${targetGraph.shortName}".`);
-    }
-
-    const childEngine = new ExecutionEngine(targetType, targetGraph);
-    childEngine.resolver = this.resolver;
-
-    if (targetType.shortName === "TM") {
-      try {
-        if (childEngine.run(input)) {
-          // For TM, we don't have a specific exit node — use a generic label
-          return [{ remainingInput: input, exitNodeLabel: "__TM_ACCEPT__" }];
-        }
-      } catch {
-        // TM error
-      }
-      return [];
-    } else {
-      return childEngine.collectAcceptingConfigurationsWithExitInfo(input);
-    }
+    return invokeSubAutomatonWithResolver(callNode, input, this.resolver, depth);
   }
 }

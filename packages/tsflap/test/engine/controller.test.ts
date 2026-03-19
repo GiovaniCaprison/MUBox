@@ -3,6 +3,8 @@ import { describe, expect, it } from "vitest";
 import { MutablePoint } from "../../src/core/point";
 import { BatchCommand } from "../../src/engine/commands/batch-command";
 import {
+  AddEdgeFromNodeCommand,
+  AddNodeAtPointCommand,
   MarkFinalNodeCommand,
   ReindexNodeLabelsCommand,
   RelabelNodeCommand,
@@ -141,6 +143,27 @@ describe("Controller", () => {
     expect(g.getNodes().size).toBe(1);
     expect(g.getEdges().size).toBe(0);
     expect(ctrl.views.nodes).toHaveLength(1);
+    expect(ViewRegistry.getNodeView(n1)).toBeUndefined();
+  });
+
+  it("removeEdge clears edge view registry entries", () => {
+    const ctrl = new Controller();
+    const g = ctrl.graph;
+    const n1 = g.addNode("q0", { initial: true });
+    const n2 = g.addNode("q1", { final: true });
+    const nv1 = new NodeView(n1, new MutablePoint(100, 100));
+    const nv2 = new NodeView(n2, new MutablePoint(300, 100));
+    ctrl.views.addNode(nv1);
+    ctrl.views.addNode(nv2);
+
+    const edgeView = ctrl.addEdge(null, nv1, nv2, new CharacterTransition("a"));
+    const edgeModel = edgeView.models.items[0];
+
+    ctrl.removeEdge(edgeView);
+
+    expect(g.getEdges().size).toBe(0);
+    expect(ctrl.views.edges).toHaveLength(0);
+    expect(ViewRegistry.getEdgeView(edgeModel)).toBeUndefined();
   });
 
   it("reindexNodeNames relabels all nodes sequentially", () => {
@@ -363,6 +386,37 @@ describe("Commands", () => {
     log.length = 0;
     batch.undo();
     expect(log).toEqual(["undo3", "undo2", "undo1"]);
+  });
+
+  it("AddNodeAtPointCommand does not mutate the graph until execute", () => {
+    const ctrl = new Controller();
+    const cmd = new AddNodeAtPointCommand(ctrl, new MutablePoint(100, 100));
+
+    expect(ctrl.graph.getNodes().size).toBe(0);
+    expect(ctrl.views.nodes).toHaveLength(0);
+
+    cmd.execute();
+    expect(ctrl.graph.getNodes().size).toBe(1);
+    expect(ctrl.views.nodes).toHaveLength(1);
+    expect(ctrl.graph.getInitialNode()).toBe(cmd.getNode());
+  });
+
+  it("AddEdgeFromNodeCommand does not create a node until execute when drawing into empty space", () => {
+    const ctrl = new Controller();
+    const start = ctrl.graph.addNode("q0", { initial: true });
+    const startView = new NodeView(start, new MutablePoint(100, 100));
+    ctrl.views.addNode(startView);
+
+    const cmd = new AddEdgeFromNodeCommand(ctrl, startView, new MutablePoint(300, 300));
+
+    expect(ctrl.graph.getNodes().size).toBe(1);
+    expect(ctrl.views.nodes).toHaveLength(1);
+    expect(ctrl.graph.getEdges().size).toBe(0);
+
+    cmd.execute();
+    expect(ctrl.graph.getNodes().size).toBe(2);
+    expect(ctrl.views.nodes).toHaveLength(2);
+    expect(ctrl.graph.getEdges().size).toBe(1);
   });
 });
 

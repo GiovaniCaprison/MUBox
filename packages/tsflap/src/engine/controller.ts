@@ -359,18 +359,7 @@ export class Controller {
     }
   }
 
-  public removeEdgeTransition(edgeV: EdgeView, edgeModel: Edge) {
-    if (edgeV.models.size === 1) {
-      this.removeEdge(edgeV);
-      return;
-    }
-    edgeV.models.remove(edgeModel);
-    this.graph.removeEdge(edgeModel);
-    edgeV.reindexEdgeModels();
-    this.views.update();
-  }
-
-  public removeEdge(edgeV: EdgeView) {
+  private teardownEdgeView(edgeV: EdgeView): void {
     if (edgeV.models.size > 0) {
       edgeV.models.items.forEach((edge: Edge) => this.graph.removeEdge(edge));
     }
@@ -378,18 +367,32 @@ export class Controller {
     this.views.removeEdge(edgeV);
   }
 
+  public removeEdgeTransition(edgeV: EdgeView, edgeModel: Edge) {
+    if (edgeV.models.size === 1) {
+      this.removeEdge(edgeV);
+      return;
+    }
+    edgeV.models.remove(edgeModel);
+    this.graph.removeEdge(edgeModel);
+    ViewRegistry.removeEdgeView(edgeModel);
+    edgeV.reindexEdgeModels();
+    this.views.update();
+  }
+
+  public removeEdge(edgeV: EdgeView) {
+    this.teardownEdgeView(edgeV);
+  }
+
   public removeNode(nodeV: NodeView) {
-    const toEdges = nodeV.model.toEdges.items.slice(0);
-    const fromEdges = nodeV.model.fromEdges.items.slice(0);
+    const connectedEdgeViews = new Set<EdgeView>();
+    [...nodeV.model.toEdges.items, ...nodeV.model.fromEdges.items].forEach((edgeModel: Edge) => {
+      const edgeView = ViewRegistry.getEdgeView(edgeModel);
+      if (edgeView) {
+        connectedEdgeViews.add(edgeView);
+      }
+    });
 
-    const deleteFn = (edgeModel: Edge) => {
-      this.graph.removeEdge(edgeModel);
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      this.views.removeEdge(ViewRegistry.getEdgeView(edgeModel)!);
-    };
-
-    toEdges.forEach(deleteFn);
-    fromEdges.forEach(deleteFn);
+    connectedEdgeViews.forEach((edgeView) => this.teardownEdgeView(edgeView));
 
     this.graph.removeNode(nodeV.model);
     this.views.removeNode(nodeV);

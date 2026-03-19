@@ -170,6 +170,9 @@ export abstract class AbstractGraph implements IGraph {
     const foundNode = this.nodes.get(node);
     if (!foundNode) return false;
 
+    const incidentEdges = [...foundNode.fromEdges.items, ...foundNode.toEdges.items];
+    incidentEdges.forEach((edge) => this.removeEdge(edge));
+
     if (foundNode === this.initialNode) {
       this.initialNode = null;
     }
@@ -251,7 +254,11 @@ export abstract class AbstractGraph implements IGraph {
     const foundEdge = this.edges.get(edge);
     if (!foundEdge) return false;
     foundEdge.removeNodes();
-    return this.edges.remove(foundEdge);
+    const removed = this.edges.remove(foundEdge);
+    if (removed) {
+      this.updateAlphabet();
+    }
+    return removed;
   }
 
   hasEdge(edge: Edge | string): boolean {
@@ -265,6 +272,10 @@ export abstract class AbstractGraph implements IGraph {
   }
 
   setInitialNode(node: Node | null): Node | null {
+    if (node && !this.nodes.has(node)) {
+      throw new Error("Cannot set initial node: node does not belong to this graph");
+    }
+
     if (this.initialNode) {
       this.initialNode.initial = false;
     }
@@ -282,16 +293,24 @@ export abstract class AbstractGraph implements IGraph {
   }
 
   markFinalNode(node: Node): Node {
+    if (!this.nodes.has(node)) {
+      throw new Error("Cannot mark final node: node does not belong to this graph");
+    }
+
     node.final = true;
-    if (this.nodes.has(node) && !this.finalNodes.has(node)) {
+    if (!this.finalNodes.has(node)) {
       this.finalNodes.add(node);
     }
     return node;
   }
 
   unmarkFinalNode(node: Node): Node {
+    if (!this.nodes.has(node)) {
+      throw new Error("Cannot unmark final node: node does not belong to this graph");
+    }
+
     node.final = false;
-    if (this.nodes.has(node) && this.finalNodes.has(node)) {
+    if (this.finalNodes.has(node)) {
       this.finalNodes.remove(node);
     }
     return node;
@@ -352,7 +371,7 @@ export abstract class AbstractGraph implements IGraph {
   }
 
   fromString(input: string): boolean {
-    const configRegex = new RegExp("^([D,N])" + this.shortName + ":\\({(.*)}, {(.*)}, {(.*)}, (.*), {(.*)}\\)$");
+    const configRegex = new RegExp("^([DN])" + this.shortName + ":\\({(.*)}, {(.*)}, {(.*)}, (.*), {(.*)}\\)$");
 
     if (!configRegex.test(input)) return false;
 
@@ -361,15 +380,21 @@ export abstract class AbstractGraph implements IGraph {
 
     try {
       const deterministic = configParse[1] === "D";
-      const alphabet = configParse[2].split(", ");
-      const nodes = configParse[3].split(", ");
+      const alphabet = configParse[2]
+        .split(", ")
+        .filter((entry) => entry.length > 0);
+      const nodes = configParse[3]
+        .split(", ")
+        .filter((entry) => entry.length > 0);
       let edgesStr = configParse[4];
       if (edgesStr.length > 0) {
         edgesStr = edgesStr.substring(1, edgesStr.length - 1);
       }
-      const edges = edgesStr.split("), (").map((edge) => edge.split(", "));
+      const edges = edgesStr.length > 0 ? edgesStr.split("), (").map((edge) => edge.split(", ")) : [];
       const initialNode = configParse[5];
-      const finalNodes = configParse[6].split(", ");
+      const finalNodes = configParse[6]
+        .split(", ")
+        .filter((entry) => entry.length > 0);
 
       this.init(deterministic);
 

@@ -72,6 +72,7 @@ export class ViewCollection {
     const nodeIndex = this.nodes.indexOf(node);
     if (nodeIndex === -1) return false;
     this.nodes.splice(nodeIndex, 1);
+    ViewRegistry.removeNodeView(node.model);
     if (this.shouldAutoUpdateOnModify) {
       this.update();
     }
@@ -91,6 +92,7 @@ export class ViewCollection {
     const edgeIndex = this.edges.indexOf(edgeV);
     if (edgeIndex === -1) return false;
     this.edges.splice(edgeIndex, 1);
+    edgeV.models.items.forEach((edgeModel) => ViewRegistry.removeEdgeView(edgeModel));
     if (this.shouldAutoUpdateOnModify) {
       this.update();
     }

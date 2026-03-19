@@ -89,7 +89,7 @@ export class OrderedMap<T extends Hashable> {
     if (typeof item === "string") {
       return this.getByHash(item) ?? this.getByString(item);
     } else {
-      return this.getByHash(item.hashCode()) ?? this.getByString(item.toString());
+      return this.getByHash(item.hashCode());
     }
   }
 

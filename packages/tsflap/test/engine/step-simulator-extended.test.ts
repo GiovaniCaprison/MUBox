@@ -2,9 +2,11 @@
 import { describe, expect, it } from "vitest";
 
 import { SimulationStatus, StepSimulator } from "../../src/engine/step-simulator";
+import { FAGraph } from "../../src/model/graphs/fa-graph";
 import { PDAGraph } from "../../src/model/graphs/pda-graph";
 import { TMGraph } from "../../src/model/graphs/tm-graph";
 import { BLANK, EPSILON, INITIAL_STACK } from "../../src/model/symbols";
+import { CharacterTransition } from "../../src/model/transitions/character-transition";
 import { PushdownTransition } from "../../src/model/transitions/pushdown-transition";
 import { TuringTransition, TuringTransitionDirection } from "../../src/model/transitions/turing-transition";
 
@@ -100,5 +102,33 @@ describe("StepSimulator — TM", () => {
     const sim = new StepSimulator(g, "b");
     sim.runToEnd();
     expect(sim.status).toBe(SimulationStatus.REJECTED);
+  });
+});
+
+describe("StepSimulator — RSM step-over", () => {
+  it("uses TM sub-automata with oracle semantics during step-over", () => {
+    const callee = new TMGraph(false);
+    const t0 = callee.addNode("t0", { initial: true });
+    const tAccept = callee.addNode("tA", { final: true });
+    callee.addEdge(t0, tAccept, new TuringTransition("a", "a", TuringTransitionDirection.RIGHT));
+
+    const caller = new FAGraph(false);
+    const q0 = caller.addNode("q0", { initial: true });
+    const q1 = caller.addNode("q1", {
+      callConfig: { targetAutomatonId: "tm-sub", callMode: "accept-reject" },
+    });
+    const q2 = caller.addNode("q2", { final: true });
+    caller.addEdge(q0, q1, new CharacterTransition(EPSILON));
+    caller.addEdge(q1, q2, new CharacterTransition("a"));
+
+    const sim = new StepSimulator(caller, "a");
+    sim.resolver = (id) => (id === "tm-sub" ? callee : null);
+
+    sim.step();
+    expect(sim.isPausedOnCallStates).toBe(true);
+    expect(sim.status).toBe(SimulationStatus.RUNNING);
+
+    sim.step();
+    expect(sim.status).toBe(SimulationStatus.ACCEPTED);
   });
 });

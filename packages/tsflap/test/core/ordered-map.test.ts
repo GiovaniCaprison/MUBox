@@ -93,6 +93,16 @@ describe("OrderedMap", () => {
     expect(map.get(a)).toBe(a);
   });
 
+  it("does not fall back to toString when looking up by object identity", () => {
+    const map = new OrderedMap<TestItem>();
+    const a = new TestItem("id1", "shared-name");
+    const b = new TestItem("id2", "shared-name");
+    map.add(a);
+
+    expect(map.get(b)).toBeNull();
+    expect(map.has(b)).toBe(false);
+  });
+
   it("removes items correctly", () => {
     const map = new OrderedMap<TestItem>();
     const a = new TestItem("1", "alpha");
@@ -109,6 +119,17 @@ describe("OrderedMap", () => {
   it("remove returns false for non-existent items", () => {
     const map = new OrderedMap<TestItem>();
     expect(map.remove("nonexistent")).toBe(false);
+  });
+
+  it("does not remove a different object that only shares the same display string", () => {
+    const map = new OrderedMap<TestItem>();
+    const a = new TestItem("id1", "shared-name");
+    const b = new TestItem("id2", "shared-name");
+    map.add(a);
+
+    expect(map.remove(b)).toBe(false);
+    expect(map.size).toBe(1);
+    expect(map.get(a)).toBe(a);
   });
 
   it("constructs from an initial array", () => {
